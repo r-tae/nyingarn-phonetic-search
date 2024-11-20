@@ -2,7 +2,7 @@
 #
 
 
-"Metaphone":
+"Basic":
     - do:
         indices.create:
             index:  phonetic_sample
@@ -13,11 +13,10 @@
                             analyzer:
                                 my_analyzer:
                                     tokenizer:  standard
-                                    filter: ["lowercase", "my_metaphone"]
+                                    filter: ["lowercase", "my_phonetic"]
                             filter:
-                                my_metaphone:
-                                    type: phonetic
-                                    encoder: metaphone
+                                my_phonetic:
+                                    type: nyingarn-phonetic
                                     replace: false
     - do:
         indices.analyze:
@@ -27,8 +26,8 @@
                 text: Joe Bloggs
 
     - length: { tokens: 4 }
-    - match:  { tokens.0.token: J  }
+    - match:  { tokens.0.token: JUWI  }
     - match:  { tokens.1.token: joe  }
-    - match:  { tokens.2.token: BLKS  }
+    - match:  { tokens.2.token: PLUKJ  }
     - match:  { tokens.3.token: bloggs  }
 

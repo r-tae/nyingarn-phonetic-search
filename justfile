@@ -1,8 +1,11 @@
 bundle:
-    gradle bundlePlugin --warning-mode all
+    ./gradlew bundlePlugin --warning-mode all
 
 clean:
-    gradle clean
+    ./gradlew clean
+
+build:
+    ./gradlew build
 
 test:
-    gradle test
+    ./gradlew test

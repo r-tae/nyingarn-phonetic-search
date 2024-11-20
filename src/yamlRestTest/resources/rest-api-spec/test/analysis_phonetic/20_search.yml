@@ -12,11 +12,10 @@
                             analyzer:
                                 my_analyzer:
                                     tokenizer:  standard
-                                    filter: ["lowercase", "my_metaphone"]
+                                    filter: ["lowercase", "my_phonetic"]
                             filter:
-                                my_metaphone:
-                                    type: phonetic
-                                    encoder: metaphone
+                                my_phonetic:
+                                    type: nyingarn-phonetic
                                     replace: false
                 mappings:
                     properties:
