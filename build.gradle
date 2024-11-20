@@ -1,0 +1,67 @@
+/*
+ * Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+ * or more contributor license agreements. Licensed under the "Elastic License
+ * 2.0", the "GNU Affero General Public License v3.0 only", and the "Server Side
+ * Public License v 1"; you may not use this file except in compliance with, at
+ * your election, the "Elastic License 2.0", the "GNU Affero General Public
+ * License v3.0 only", or the "Server Side Public License, v 1".
+ */
+
+
+buildscript {
+  // versions taken from https://github.com/elastic/elasticsearch/blob/v8.16.0/build-tools-internal/version.properties
+  ext.pluginApiVersion = '8.16.0'
+  ext.luceneVersion = '9.12.0'
+  ext.commonscodecVersion = '1.15'
+
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.elasticsearch.gradle:build-tools:${pluginApiVersion}"
+  }
+}
+
+apply plugin: 'java'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+apply plugin: 'elasticsearch.stable-esplugin'
+apply plugin: 'elasticsearch.yaml-rest-test'
+
+esplugin {
+  name 'nyingarn-phonetic-search'
+  classname 'net.nyingarn.phonetic'
+  description 'Phonetic search made for the Nyingarn Repository and Workspace'
+}
+
+group 'net.nyingarn'
+version '1.0-SNAPSHOT'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+dependencies {
+  compileOnly "org.elasticsearch.plugin:elasticsearch-plugin-api:${pluginApiVersion}"
+  compileOnly "org.elasticsearch.plugin:elasticsearch-plugin-analysis-api:${pluginApiVersion}"
+  compileOnly "org.apache.lucene:lucene-analysis-common:${luceneVersion}"
+  implementation "org.apache.lucene:lucene-analysis-phonetic:${luceneVersion}"
+  implementation "commons-codec:commons-codec:${commonscodecVersion}"
+
+  testImplementation "org.elasticsearch.plugin:elasticsearch-plugin-api:${pluginApiVersion}"
+  testImplementation "org.elasticsearch.plugin:elasticsearch-plugin-analysis-api:${pluginApiVersion}"
+  testImplementation "org.apache.lucene:lucene-analysis-common:${luceneVersion}"
+  testImplementation "org.apache.lucene:lucene-test-framework:${luceneVersion}"
+  testImplementation "org.elasticsearch.test:framework:${pluginApiVersion}"
+
+  testImplementation ('junit:junit:4.13.2'){
+    exclude group: 'org.hamcrest'
+  }
+  testImplementation 'org.mockito:mockito-core:4.4.0'
+  testImplementation 'org.hamcrest:hamcrest:2.2'
+}
